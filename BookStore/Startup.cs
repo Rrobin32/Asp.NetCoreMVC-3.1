@@ -16,6 +16,11 @@ namespace BookStore
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //If we need to work with the web apis then we dont need views we only need MODEL and Controller.
+            //services.AddControllers();
+            //If we need to add views also then we need to user this method.
+            services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -26,6 +31,7 @@ namespace BookStore
                 app.UseDeveloperExceptionPage();
             }
 
+            #region MiddleWare
             /* Custome MiddleWare */
             /* 
              * We can have "n" number of middleware in a program but the only thing is important is the order of the middleware in which they are used.
@@ -38,50 +44,56 @@ namespace BookStore
              * Middleware has access to all the request and response.
 
              */
-            app.Use(async (Context, next) =>
-                {
-                    await Context.Response.WriteAsync("Hello my first Middleware");
+            //app.Use(async (Context, next) =>
+            //    {
+            //        await Context.Response.WriteAsync("Hello my first Middleware");
 
-                    await next();
+            //        await next();
 
-                    await Context.Response.WriteAsync("\nHello my first Middleware after next method is called");
-                });
+            //        await Context.Response.WriteAsync("\nHello my first Middleware after next method is called");
+            //    });
 
-            app.Use(async (Context, next) =>
-            {
-                await Context.Response.WriteAsync("\nHello my second Middleware");
+            //app.Use(async (Context, next) =>
+            //{
+            //    await Context.Response.WriteAsync("\nHello my second Middleware");
 
-                await next();
+            //    await next();
 
-                await Context.Response.WriteAsync("\nHello my second Middleware after next method is called");
-            });
+            //    await Context.Response.WriteAsync("\nHello my second Middleware after next method is called");
+            //});
 
-            app.Use(async (Context, next) =>
-                {
-                    await Context.Response.WriteAsync("\nHello my third Middleware");
+            //app.Use(async (Context, next) =>
+            //    {
+            //        await Context.Response.WriteAsync("\nHello my third Middleware");
 
-                    await next();
-                });
+            //        await next();
+            //    });
 
             /* To map a url with the particular resource.
              * Order of middleware is very important if we remove this  "app.UseRouting();" this the program will throw an error.
              * If we move this middleware to the last then also the program will throw an error.
              */
+            #endregion
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                /* mapping a url with the particular resource. */
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("\nHello World!");
-                });
+                /* Adds endpoints for controller actions to the Microsoft.AspNetCore.Routing.IEndpointRouteBuilder
+                   and adds the default route {controller=Home}/{action=Index}/{id?}.*/
+                endpoints.MapDefaultControllerRoute();
 
                 /* mapping a url with the particular resource. */
-                endpoints.Map("/mvc", async context =>
-                {
-                    await context.Response.WriteAsync("\nWelcome to the ASP.Net Core MVC!");
-                });
+                //endpoints.MapGet("/", async context =>
+                //{
+                //    await context.Response.WriteAsync("\nHello World!");
+                //});
+
+                /* mapping a url with the particular resource. */
+                //endpoints.Map("/mvc", async context =>
+                //{
+                //    await context.Response.WriteAsync("\nWelcome to the ASP.Net Core MVC!");
+                //});
                 /* Difference between Map() and MapGet() is MapGet() only handele the get() for the particular Route but Map() will handele all request comming to the 
                    Particular Route.  
                  */
