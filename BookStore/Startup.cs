@@ -80,7 +80,7 @@ namespace BookStore
             app.UseEndpoints(endpoints =>
             {
                 /* Adds endpoints for controller actions to the Microsoft.AspNetCore.Routing.IEndpointRouteBuilder
-                   and adds the default route {controller=Home}/{action=Index}/{id?}.*/
+                   and adds the default route {controller=Home}/{action=Index}/{id?}. */
                 endpoints.MapDefaultControllerRoute();
 
                 /* mapping a url with the particular resource. */
